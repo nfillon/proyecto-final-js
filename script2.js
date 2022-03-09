@@ -61,39 +61,24 @@ function addToCart(id){
        return;
    }
    const buscarID = arregloInstancias.find(awsID => awsID.id === id)
-   addTitulos = document.getElementById('titulosadd')
+   
+   //Seteo desplay para que se vea el TR de la tabla
+   document.getElementById('hiddenThead').style.display = "block";
 
-   addTitulos.innerHTML += ` 
-   <table class="table table-striped">
-   <thead>
-     <tr>
-       <th scope="col">#ID</th>
-       <th scope="col">Tipo Instancia</th>
-       <th scope="col">Precio</th>
-       <th scope="col">Dias</th>
-       <th scope="col">Cantidad</th>
-       <th scope="col">Precio Total</th>
-       <th scope="col">Calcular</th>
-     </tr>
-   </thead>
-   <tbody id="caritoAdd">
-   ` 
-   addcarrito = document.getElementById('caritoAdd')
-   addcarrito.innerHTML += `
-   <tr>
-       <th scope="row">${buscarID.id}</th>
-       <td>${buscarID.tipo}</td>
-       <td>${buscarID.precio} USD</td>
-       <td>DIAS <input type"number" id="dias" value="0" min="0" max="30" /></td>
-       <td>CANTIDAD <input type="number" id="cantidad" value="0" min="0" max="30"/></td> 
-       <td id="${buscarID.id}totalizarCarrito"></td>
-       <td ><input type="button" value="Calcular" onclick="calcularInstancia(${buscarID.id},${buscarID.precio},document.getElementById('dias').value,document.getElementById('cantidad').value)"></td>
-       <td ><input type="button" value="Contratar" onclick="buytoCard('${buscarID.id}','${buscarID.tipo}','${buscarID.precio}',document.getElementById('dias').value,document.getElementById('cantidad').value)"></td>
-    </tr>
-    </tbody>
-    </table>
-    `   
-  
+   
+   
+addcarrito = document.getElementById('caritoAdd')
+addcarrito.innerHTML += `
+<tr>
+  <th scope="row">${buscarID.id}</th>
+  <td>${buscarID.tipo}</td>
+  <td>${buscarID.precio} USD</td>
+  <td><input type="number" id="dias" value="0" min="0" max="30" oninput="calcularInstancia(${buscarID.id},${buscarID.precio},document.getElementById('dias').value,document.getElementById('cantidad').value)"/></td>
+  <td><input type="number" id="cantidad" value="1" min="1" max="30" oninput="calcularInstancia(${buscarID.id},${buscarID.precio},document.getElementById('dias').value,document.getElementById('cantidad').value)"/></td>
+  <td id="${buscarID.id}"></td>
+  <td><input type="button" value="Contratar" onclick="buytoCard('${buscarID.id}','${buscarID.tipo}','${buscarID.precio}',document.getElementById('dias').value,document.getElementById('cantidad').value)"/></td>
+</tr>
+`
 }
 
 
@@ -103,14 +88,18 @@ function addToCart(id){
 const calcularInstancia = (id,precio, dias, cantidad, ) => {
    
     const calcular = ((((precio* minutoHora) *diaMes)* dias)*cantidad)
-    totalizarCarrito = document.getElementById(id,'totalizarCarrito')
+    totalizarCarrito = document.getElementById(id)
     console.log(totalizarCarrito)
 
-    totalizarCarrito.innerText = `${calcular}` 
+    totalizarCarrito.innerText = `${calcular.toFixed(2)}` 
     console.log(calcular)
 
 }
 
+const totalizarCard = () => {
+
+    
+}
 
 
 const buytoCard = (idInst, tipo, precio, dias, cantidad) => {
