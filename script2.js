@@ -61,24 +61,28 @@ function addToCart(id){
        return;
    }
    const buscarID = arregloInstancias.find(awsID => awsID.id === id)
-   
-   //Seteo desplay para que se vea el TR de la tabla
-   document.getElementById('hiddenThead').style.display = "block";
+
+
+
 
    
-   
-addcarrito = document.getElementById('caritoAdd')
-addcarrito.innerHTML += `
-<tr>
-  <th scope="row">${buscarID.id}</th>
-  <td>${buscarID.tipo}</td>
-  <td>${buscarID.precio} USD</td>
-  <td><input type="number" id="dias" value="0" min="0" max="30" oninput="calcularInstancia(${buscarID.id},${buscarID.precio},document.getElementById('dias').value,document.getElementById('cantidad').value)"/></td>
-  <td><input type="number" id="cantidad" value="1" min="1" max="30" oninput="calcularInstancia(${buscarID.id},${buscarID.precio},document.getElementById('dias').value,document.getElementById('cantidad').value)"/></td>
-  <td id="${buscarID.id}"></td>
-  <td><input type="button" value="Contratar" onclick="buytoCard('${buscarID.id}','${buscarID.tipo}','${buscarID.precio}',document.getElementById('dias').value,document.getElementById('cantidad').value)"/></td>
-</tr>
-`
+   //Seteo desplay para que se vea el TR de la tabla
+ 
+
+
+    document.getElementById('hiddenThead').style.display = "block";
+    addcarrito = document.getElementById('caritoAdd')
+    addcarrito.innerHTML += `
+    <tr>
+    <th scope="row" id="awsid">${buscarID.id}</th>
+    <td>${buscarID.tipo}</td>
+    <td>${buscarID.precio} USD</td>
+    <td><input type="number" id="dias" value="0" min="0" max="30" oninput="calcularInstancia(${buscarID.id},${buscarID.precio},document.getElementById('dias').value,document.getElementById('cantidad').value)"/></td>
+    <td><input type="number" id="cantidad" value="1" min="0" max="30" oninput="calcularInstancia(${buscarID.id},${buscarID.precio},document.getElementById('dias').value,document.getElementById('cantidad').value)"/></td>
+    <td id="${buscarID.id}"></td>
+    <td><input type="button" value="Contratar" onclick="buytoCard('${buscarID.id}','${buscarID.tipo}','${buscarID.precio}',document.getElementById('dias').value,document.getElementById('cantidad').value)"/></td>
+    </tr>
+    `
 }
 
 
