@@ -175,7 +175,7 @@ function addToCart(id){
                 document.getElementById("cantidad").value = addCantidad 
 
                 Swal.fire(
-                    `La ${buscarID.tipo} Se agrego corretamente`,)
+                    `La ${buscarID.tipo} Se agrego corretamente`)
                 }
             }
             )
@@ -190,7 +190,7 @@ const calcularInstancia = (id,precio, dias, cantidad, ) => {
     console.log(totalizarCarrito)
 
     totalizarCarrito.innerText = `${calcular.toFixed(2)}` 
-    console.log(calcular)
+    // console.log(calcular)
 
 }
 
