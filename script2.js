@@ -155,7 +155,7 @@ function addToCart(id){
         }).then((result) => {
             if (result.isConfirmed) {        
 
-                var idaws = ((document.getElementById("cantidad")||{}).value)||"";
+                // var idaws = ((document.getElementById("cantidad")||{}).value)||"";
 
                 document.getElementById('hiddenThead').style.display = "block";
                 addcarrito = document.getElementById('caritoAdd')
@@ -171,7 +171,7 @@ function addToCart(id){
                 </tr>
                 `
        
-                var addCantidad = 2 + 1
+                // var addCantidad = 2 + 1
                 document.getElementById("cantidad").value = addCantidad 
 
                 Swal.fire(
@@ -194,11 +194,12 @@ const calcularInstancia = (id,precio, dias, cantidad, ) => {
 
 }
 
+// terminar el totalizador
 const totalizarCard = () => {
  
 }
 
-
+//Grabar en el storage para regar los valores de carrito cuando recarguen la pagina.
 const buytoCard = (idInst, tipo, precio, dias, cantidad) => {
 
    const idInstan = idInst;
