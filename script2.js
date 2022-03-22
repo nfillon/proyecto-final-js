@@ -3,6 +3,8 @@ const diaMes= 30;
 let addCarrito = [];
 let calcular = [];
 
+
+
 class Userdd { 
     constructor(email,psw,estado) {
         this.email = email;
@@ -100,29 +102,6 @@ formularioLogin.addEventListener('submit', (e) => {
     }
 })
 
-
-let arregloInstancias = [{
-    id: 1,
-    tipo: "t2.nano2",
-    description:  "Vcpu = 1 <br> Memoria = 0,5 GB <br> Storage = EBS",
-    precio: "0.0058"
-}, {
-    id: 2,
-    tipo: "t2.micro",
-    description:  "Vcpu = 1 <br> Memoria = 1 GB <br> Storage = EBS ",
-    precio: "0.0116"
-},{
-    id: 3,
-    tipo: "t2.small",
-    description:  "Vcpu = 1 <br> Memoria = 2 <br> Storage = EBS ",
-    precio: "0.023"
-},{
-    id: 4,
-    tipo : "t2.medium",
-    description : "Vcpu <br> 2 Memoria = <br>  Storage = EBS" ,
-    precio: "0.0464"
-}];
-
 //Titulo con HTML dinamico
 
 let IdWelcome = document.getElementById('IdWelcome')
@@ -132,7 +111,17 @@ IdWelcome.innerHTML=`<h3><strong>Hola vas a iniciar la contratacion de instancia
 //Recorro el arreglo y armo las card
 let idCard = document.getElementById('idCard')
 
-arregloInstancias.forEach(instancias =>  { idCard.innerHTML += `
+async function obtenerInstancias() { 
+    const response = await fetch("json/instancias.json", {
+        method: 'GET', mode: 'no-cors'
+    })
+    return await response.json()
+
+}
+
+obtenerInstancias().then (instancias => {
+    instancias.forEach((instancias) => 
+    { idCard.innerHTML += `
   <div class="col-sm-6 w-25 mb-1" >
         <div class="card">
             <div class="card-body" id="idInst" >
@@ -148,56 +137,51 @@ arregloInstancias.forEach(instancias =>  { idCard.innerHTML += `
    </div>
   `
 })
-
-
+})
 
 function addToCart(id){
    id = id
 
-
-   Swal.fire({
-   title: '¿Añadir este producto al carrito de la compra?',
-   icon: 'question',
-   showCancelButton: true,
-   confirmButtonColor: '#3085d6',
-   cancelButtonColor: '#d33',
-   confirmButtonText: 'Agregar'
-  }).then((result) => {
-      if (result.isConfirmed) {        
-        Swal.fire(
-              `La ${buscarID.tipo} Se agrego corretamente`,)
+   obtenerInstancias().then (arregloInstancias => {
+       const buscarID = arregloInstancias.find(awsID => awsID.id === id)
+       
+       Swal.fire({
+           title: '¿Añadir este producto al carrito de la compra?',
+           icon: 'question',
+           showCancelButton: true,
+           confirmButtonColor: '#3085d6',
+           cancelButtonColor: '#d33',
+           confirmButtonText: 'Agregar'
+        }).then((result) => {
+            if (result.isConfirmed) {        
+                Swal.fire(
+                    `La ${buscarID.tipo} Se agrego corretamente`,)
+                }
             }
+            )
+    var idaws = ((document.getElementById("cantidad")||{}).value)||"";
+    if (idaws=="")
+       {
+         document.getElementById('hiddenThead').style.display = "block";
+         addcarrito = document.getElementById('caritoAdd')
+         addcarrito.innerHTML = `
+         <tr>
+         <th scope="row" id="awsid">${buscarID.id}</th>
+         <td>${buscarID.tipo}</td>
+         <td>${buscarID.precio} USD</td>
+         <td><input type="number" id="dias" value="0" min="0" max="30" oninput="calcularInstancia(${buscarID.id},${buscarID.precio},document.getElementById('dias').value,document.getElementById('cantidad').value)"/></td>
+         <td><input type="number" id="cantidad" value="1" min="0" max="30" oninput="calcularInstancia(${buscarID.id},${buscarID.precio},document.getElementById('dias').value,document.getElementById('cantidad').value)"/></td>
+         <td id="${buscarID.id}"></td>
+         <td><input type="button" value="Contratar" onclick="buytoCard('${buscarID.id}','${buscarID.tipo}','${buscarID.precio}',document.getElementById('dias').value,document.getElementById('cantidad').value)"/></td>
+         </tr>
+         `
+           return;
+         }else {
+         var addCantidad = 2 + 1
+         document.getElementById("cantidad").value = addCantidad
+         }
+    })
 }
-
-)
-   const buscarID = arregloInstancias.find(awsID => awsID.id === id)
-
-        var idaws = ((document.getElementById("cantidad")||{}).value)||"";
-        if (idaws=="")
-           {
-             document.getElementById('hiddenThead').style.display = "block";
-             addcarrito = document.getElementById('caritoAdd')
-             addcarrito.innerHTML += `
-             <tr>
-             <th scope="row" id="awsid">${buscarID.id}</th>
-             <td>${buscarID.tipo}</td>
-             <td>${buscarID.precio} USD</td>
-             <td><input type="number" id="dias" value="0" min="0" max="30" oninput="calcularInstancia(${buscarID.id},${buscarID.precio},document.getElementById('dias').value,document.getElementById('cantidad').value)"/></td>
-             <td><input type="number" id="cantidad" value="1" min="0" max="30" oninput="calcularInstancia(${buscarID.id},${buscarID.precio},document.getElementById('dias').value,document.getElementById('cantidad').value)"/></td>
-             <td id="${buscarID.id}"></td>
-             <td><input type="button" value="Contratar" onclick="buytoCard('${buscarID.id}','${buscarID.tipo}','${buscarID.precio}',document.getElementById('dias').value,document.getElementById('cantidad').value)"/></td>
-             </tr>
-             `
-               return;
-             }else 
-             var addCantidad = 2 + 1
-             document.getElementById("cantidad").value = addCantidad
-
-}
-
-
-
-
 
 const calcularInstancia = (id,precio, dias, cantidad, ) => {
    
@@ -211,8 +195,7 @@ const calcularInstancia = (id,precio, dias, cantidad, ) => {
 }
 
 const totalizarCard = () => {
-
-    
+ 
 }
 
 
@@ -239,5 +222,3 @@ const buytoCard = (idInst, tipo, precio, dias, cantidad) => {
         var cart = localStorage.getItem("addcarrito");
         console.log(cart);
 }
-
-
